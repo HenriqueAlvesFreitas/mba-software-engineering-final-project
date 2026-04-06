@@ -4,15 +4,14 @@ import { Sidebar } from './Sidebar';
 interface MobileMenuProps {
   isOpen: boolean;
   onClose: () => void;
-  currentScreen: string;
-  onNavigate: (screen: string) => void;
+ 
 }
 
-export function MobileMenu({ isOpen, onClose, currentScreen, onNavigate }: MobileMenuProps) {
+export function MobileMenu({ isOpen, onClose,  }: MobileMenuProps) {
   if (!isOpen) return null;
 
   const handleNavigate = (screen: string) => {
-    onNavigate(screen);
+    // onNavigate(screen);
     onClose();
   };
 
@@ -25,7 +24,7 @@ export function MobileMenu({ isOpen, onClose, currentScreen, onNavigate }: Mobil
             <X size={24} />
           </button>
         </div>
-        <Sidebar currentScreen={currentScreen} onNavigate={handleNavigate} />
+        <Sidebar/>
       </div>
     </div>
   );

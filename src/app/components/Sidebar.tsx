@@ -1,17 +1,21 @@
 import { LayoutDashboard, Upload, History, Settings, BarChart3 } from 'lucide-react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 interface SidebarProps {
   currentScreen: string;
   onNavigate: (screen: string) => void;
 }
 
-export function Sidebar({ currentScreen, onNavigate }: SidebarProps) {
+export function Sidebar() {
+  const location = useLocation();
+  const navigate = useNavigate();
+
   const menuItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
-    { id: 'upload', label: 'Data Upload', icon: Upload },
-    { id: 'history', label: 'AI Chat', icon: History },
-    { id: 'statistics', label: 'Statistics', icon: BarChart3 },
-    { id: 'settings', label: 'Settings', icon: Settings },
+    { path: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+    { path: "/upload", label: "Data Upload", icon: Upload },
+    { path: "/chat", label: "AI Chat", icon: History },
+    { path: "/statistics", label: "Statistics", icon: BarChart3 },
+    { path: "/settings", label: "Settings", icon: Settings },
   ];
 
   return (
@@ -28,14 +32,14 @@ export function Sidebar({ currentScreen, onNavigate }: SidebarProps) {
       </div>
 
       <nav className="flex-1 p-4">
-        {menuItems.map((item) => {
+       {menuItems.map((item) => {
           const Icon = item.icon;
-          const isActive = currentScreen === item.id;
+          const isActive = location.pathname === item.path;
 
           return (
             <button
-              key={item.id}
-              onClick={() => onNavigate(item.id)}
+              key={item.path}
+              onClick={() => navigate(item.path)}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg mb-1 transition-all ${
                 isActive
                   ? 'bg-[#3b82f6] text-white'
