@@ -15,7 +15,7 @@ export default function UploadPage({ setData }: any) {
   };
 
   const handleSaveManualData = (newData: any) => {
-    setData(newData);
+    setData((prevData: any) => [...prevData, ...newData]);
     navigate("/dashboard");
   };
 

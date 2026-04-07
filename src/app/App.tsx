@@ -52,37 +52,12 @@ export default function App() {
  
 
   return (
-      <div className="flex h-screen bg-[#f8fafc]">
-        <div className="hidden lg:block">
-          <Sidebar />
-        </div>
-
-        <MobileMenu
-          isOpen={mobileMenuOpen}
-          onClose={() => setMobileMenuOpen(false)}
-        />
-
-        <div className="flex-1 flex flex-col overflow-hidden">
-          <div className="flex items-center gap-4 lg:hidden px-4 py-3 bg-white border-b border-[#e2e8f0]">
-            <button onClick={() => setMobileMenuOpen(true)}>
-              <Menu size={24} />
-            </button>
-            <h1>{title}</h1>
-          </div>
-
-          <div className="hidden lg:block">
-            <Header title={title}/>
-          </div>
-
-          <div className="flex-1 overflow-auto">
             <AnimatedRoutes
               data={data}
               setData={setData}
               messages={messages}
               onSendMessage={handleSendMessage}
             />
-          </div>
-        </div>
-      </div>
+          
   );
 }

@@ -5,6 +5,51 @@ interface HeaderProps {
 }
 
 export function Header({ title }: HeaderProps) {
+
+  const getUserInfo = () => {
+    const stored = localStorage.getItem("user");
+
+    if (!stored) {
+      return {
+        name: "John Doe",
+        initials: "JD",
+      };
+    }
+
+    try {
+      const parsed = JSON.parse(stored);
+      const email: string = parsed.email || "";
+
+      const namePart = email.split("@")[0]; // antes do @
+
+      // separa por ponto (henrique.freitas)
+      const parts = namePart.split(".");
+
+      // nome formatado
+      const name = parts
+        .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
+        .join(" ");
+
+      // iniciais (HF)
+      const initials = parts
+        .map((p) => p.charAt(0).toUpperCase())
+        .slice(0, 2)
+        .join("");
+
+      return {
+        name: name || "John Doe",
+        initials: initials || "JD",
+      };
+    } catch {
+      return {
+        name: "John Doe",
+        initials: "JD",
+      };
+    }
+  };
+
+  const { name, initials } = getUserInfo();
+
   return (
     <div className="h-[72px] bg-white border-b border-[#e2e8f0] flex items-center justify-between px-8">
       <div>
@@ -26,7 +71,7 @@ export function Header({ title }: HeaderProps) {
           <Settings size={20} className="text-[#64748b]" />
         </button>
         <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#3b82f6] to-[#8b5cf6] flex items-center justify-center text-white font-semibold cursor-pointer">
-          JD
+          {initials}
         </div>
       </div>
     </div>

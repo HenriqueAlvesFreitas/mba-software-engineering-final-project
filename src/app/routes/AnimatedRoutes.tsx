@@ -7,14 +7,21 @@ const DashboardPage = lazy(() => import("../pages/DashboardPage"));
 const ChatPage = lazy(() => import("../pages/ChatPage"));
 const StatisticsPage = lazy(() => import("../pages/StatisticsPage"));
 const SettingsPage = lazy(() => import("../pages/SettingsPage"));
+const LoginPage = lazy(() => import("../pages/LoginPage"));
+const ApplicationLayout = lazy(() => import("../components/layout/ApplicationLayout"));
+
 
 // Fallback loader simples
 const Loader = () => <div>Loading...</div>;
 
-// (Opcional) Proteção futura
+
+
 const ProtectedRoute = ({ children }: any) => {
-  const hasData = true; // depois você pode validar se tem dados carregados
-  if (!hasData) return <Navigate to="/" />;
+  const connected = localStorage.getItem("isAuthenticated");
+
+  console.log(connected)
+  if (!connected) return <Navigate to="/login" />;
+
   return children;
 };
 
@@ -31,49 +38,71 @@ export default function AnimatedRoutes(props: any) {
     <Suspense fallback={<Loader />}>
       <Routes>
 
-        {/* Upload (entrada do sistema) */}
-        <Route path="/" element={<UploadPage {...props} />} />
+        <Route element={<ApplicationLayout />}>
 
-        {/* Dashboard */}
+          <Route path="/" 
+            element={
+              <ProtectedRoute>
+                <UploadPage {...props} />
+              </ProtectedRoute>
+              
+            }  
+          />
+
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <DashboardPage {...props} />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/chat"
+            element={
+              <ProtectedRoute>
+                <ChatPage {...props} />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/statistics"
+            element={
+              <ProtectedRoute>
+                <StatisticsPage {...props} />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/settings"
+            element={
+              <ProtectedRoute>
+                <SettingsPage {...props} />
+              </ProtectedRoute>
+              
+            }
+          />
+
+          <Route path="*" 
+            element={
+              <ProtectedRoute>
+                <Navigate to="/" />
+              </ProtectedRoute>
+              } 
+          />
+
+        </Route>
+
         <Route
-          path="/dashboard"
+          path="/login"
           element={
-            <ProtectedRoute>
-              <DashboardPage {...props} />
-            </ProtectedRoute>
+            <LoginPage {...props} />
           }
         />
-
-        {/* Chat IA */}
-        <Route
-          path="/chat"
-          element={
-            <ProtectedRoute>
-              <ChatPage {...props} />
-            </ProtectedRoute>
-          }
-        />
-
-        {/* Estatísticas */}
-        <Route
-          path="/statistics"
-          element={
-            <ProtectedRoute>
-              <StatisticsPage {...props} />
-            </ProtectedRoute>
-          }
-        />
-
-        {/* Configurações */}
-        <Route
-          path="/settings"
-          element={
-            <SettingsPage {...props} />
-          }
-        />
-
-        {/* Fallback */}
-        <Route path="*" element={<Navigate to="/" />} />
+        
       </Routes>
     </Suspense>
   );
